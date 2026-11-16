@@ -1,16 +1,4 @@
-from constants import *
-
 import pandas as pd
-import numpy as np
-import pandas.api.types as pdt
-# import seaborn as sns
-# from matplotlib import pyplot as plt
-# %matplotlib inline
-# from sklearn.model_selection import train_test_split
-# from sklearn.feature_extraction import DictVectorizer
-# from sklearn.linear_model import LogisticRegression
-# from sklearn.metrics import accuracy_score
-# from sklearn.metrics import roc_auc_score
 
 from sklearn.model_selection import train_test_split
 
@@ -28,6 +16,8 @@ from sklearn.metrics import (
     confusion_matrix,
     classification_report
 )
+
+from constants import *
 
 def evaluate_model(y_true, y_pred, y_proba):
 
@@ -67,7 +57,8 @@ X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, r
 
 logistic_regression = Pipeline([
     ('scaler', StandardScaler()),
-    ('model', LogisticRegression(max_iter=1000,random_state=42, class_weight='balanced'))
+    # ('model', LogisticRegression(max_iter=1000,random_state=42, class_weight='balanced'))
+    ('model', LogisticRegression(max_iter=1000,random_state=42))
 ])
 
 logistic_regression.fit(X_train, y_train)
@@ -75,10 +66,12 @@ logistic_regression.fit(X_train, y_train)
 y_val_pred = logistic_regression.predict(X_val)                     # returns 0 or 1
 y_val_proba = logistic_regression.predict_proba(X_val)[:, 1]        # returns the probability (good for default prediction)
 
+y_pred = (y_val_proba >= 0.3).astype(int)
 
-evaluate_model(y_val, y_val_pred, y_val_proba)
+evaluate_model(y_val, y_pred, y_val_proba)
 
-for threshold in [0.5, 0.4, 0.3, 0.2]:
+# for threshold in [0.5, 0.4, 0.3, 0.2]:
+for threshold in [0.25, 0.3, 0.35, 0.4]:
 
     y_pred = (y_val_proba >= threshold).astype(int)
 

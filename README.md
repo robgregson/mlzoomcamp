@@ -1,74 +1,140 @@
-# ML Zoomcamp 2026 midterm project - Rob Gregson
+# Credit Card Default Prediction
 
-## Data explanation
+## Project Overview
 
-https://inseaddataanalytics.github.io/INSEADAnalytics/CourseSessions/ClassificationProcessCreditCardDefault.html
+This project investigates the use of machine learning to predict whether a credit card customer is likely to default on their payment obligations.
 
-## The Business Context
-A Taiwan-based credit card issuer wants to better predict the likelihood of default for its customers, as well as 
-identify the key drivers that determine this likelihood. This would inform the issuer’s decisions on who to give a 
-credit card to and what credit limit to provide. It would also help the issuer have a better understanding of their 
-current and potential customers, which would inform their future strategy, including their planning of offering targeted 
-credit products to their customers.
+Using historical customer, credit limit, repayment and billing information, the project develops and evaluates classification models to identify customers who may default.
 
-## The Data
+The primary objective is to build a predictive model that can distinguish between customers who default and those who do not, while considering the challenges associated with an imbalanced dataset.
 
-Data source: https://www.kaggle.com/uciml/default-of-credit-card-clients-dataset. 
-Credit to:
-* Lichman, M. (2013). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]
-* Irvine, CA: University of California, School of Information and Computer Science
+## Dataset
 
-The credit card issuer has gathered information on 30000 customers. The dataset contains information on 24 variables, 
-including demographic factors, credit data, history of payment, and bill statements of credit card customers from April 
-2005 to September 2005, as well as information on the outcome: did the customer default or not?
+The dataset contains customer demographic information and historical credit card payment and billing records.
 
-## Original columns:
+The target variable is:
 
-'ID', 'LIMIT_BAL', 'SEX', 'EDUCATION', 'MARRIAGE', 'AGE', 'PAY_0',
-'PAY_2', 'PAY_3', 'PAY_4', 'PAY_5', 'PAY_6', 'BILL_AMT1', 'BILL_AMT2',
-'BILL_AMT3', 'BILL_AMT4', 'BILL_AMT5', 'BILL_AMT6', 'PAY_AMT1',
-'PAY_AMT2', 'PAY_AMT3', 'PAY_AMT4', 'PAY_AMT5', 'PAY_AMT6',
-'default payment next month'
+- `default`: Indicates whether a customer defaulted (1) or did not default (0).
 
-## Initial conformation
+The dataset contains a range of numerical and categorical features, including credit limits, age, repayment status, bill amounts and payment amounts.
 
-### rename the default column:
-df = df.rename(columns={'default payment next month': 'default_payment_next_month'})
-### rename the PAY_0 column to PAY_1 to standardise it with the others
-df = df.rename(columns={'PAY_0': 'PAY_1'})
+## Methodology
 
-## column encodings
+The project follows a structured machine learning workflow.
 
-EDUCATION	                    (1=graduate school, 2=university, 3=high school, 4=others, 5=unknown, 6=unknown)
-SEX (means gender)              (1=male, 2=female)
-EDUCATION	                    (1=graduate school, 2=university, 3=high school, 4=others, 5=unknown, 6=unknown)
-MARRIAGE (means marital status) (1=married, 2=single, 3=others)
+### 1. Data Preparation
 
-The encoding of columns 7-12 (PAY_1,PAY_2,PAY_3...PAY6) is:
+Initial data preparation includes:
 
-* -2 = no consumption, 
-* -1 = pay duly, 
-*  0 = the use of revolving credit, 
-* 1-8 = payment delay of 1 to 8 months, 
-*  9 = payment delay for nine months and above
+- Inspecting the dataset and its structure.
+- Checking for missing values and duplicate records.
+- Examining data types and feature distributions.
+- Separating the target variable from the predictor features.
+- Splitting the data into training and testing sets.
 
-This applies to these columns (LABEL - meaning)
+### 2. Feature Engineering
 
-PAY_1 - month 0
-PAY_2 - month -1 (ie one month prior)
-PAY_3 - month -2 (2 months prior)
-PAY_4 - month -3 (etc.)
-PAY_5 - month -4
-PAY_6 - month -5
+Additional features are created to capture patterns in customer behaviour that may help predict default.
 
-So the total number of months is 6 - the current month and 5 retrospective.
+These include measures of credit utilisation, average billing amounts and trends in billing and repayment behaviour.
 
-## How to score repayment history:
+Feature engineering aims to provide the models with more meaningful representations of customer financial behaviour.
 
-Create new columns:
+### 3. Feature Selection
 
-Number of no consumption months (count number of -2 values) / total months 
-Number of pay duly months (count number of -1 values) / total months 
-Number of revolving credit months (count number of 0 values) / total months
-Late payment rating: sum of late payment intervals (add all columns > 0) / total late payment months * max (8)
+Spearman correlation analysis is used to investigate relationships between engineered features and identify potential redundancy.
 
+The following features were removed because of strong correlations with other features:
+
+| Removed feature | Reason |
+|---|---|
+| `latest_credit_utilisationn` | Strongly correlated with `average_credit_utilisation` |
+| `max_credit_utilisation` | Strongly correlated with `average_credit_utilisation` |
+| `bill_trend_intercept` | Strongly correlated with `average_bill_amount` |
+
+This reduces unnecessary feature redundancy and helps simplify the modelling process.
+
+### 4. Model Development
+
+Three classification approaches are investigated:
+
+**Logistic Regression**
+
+Used as a baseline classification model. Features are standardised using `StandardScaler` before training.
+
+**Decision Tree**
+
+A tree-based classification model that identifies patterns in the data through a sequence of feature-based decisions.
+
+Hyperparameter optimisation is performed to investigate the effects of tree depth, minimum samples per split, minimum samples per leaf, splitting criteria and class weighting.
+
+**Random Forest**
+
+An ensemble learning approach that combines predictions from multiple decision trees. It is investigated to determine whether combining several trees improves predictive performance and generalisation.
+
+### 5. Model Evaluation
+
+Models are evaluated using the following classification metrics:
+
+- **Accuracy:** The proportion of all predictions that are correct.
+- **Precision:** The proportion of predicted defaults that are actual defaults.
+- **Recall:** The proportion of actual defaults correctly identified.
+- **F1-score:** The harmonic mean of precision and recall.
+- **ROC-AUC:** Measures the model's ability to distinguish between the two classes across different classification thresholds.
+
+The confusion matrix is also used to examine true positives, true negatives, false positives and false negatives.
+
+Particular attention is given to recall and F1-score for the default class, as identifying customers who may default is an important objective.
+
+Classification threshold adjustments are also investigated to explore the trade-off between precision and recall.
+
+## Model Optimisation
+
+Decision tree hyperparameters are investigated using `RandomizedSearchCV` with stratified five-fold cross-validation.
+
+The search evaluates multiple combinations of hyperparameters using F1-score as the optimisation metric.
+
+This helps identify a model configuration that performs consistently across different training and validation folds.
+
+## Technologies and Libraries
+
+The project is implemented in Python using:
+
+- **Pandas:** Data manipulation and analysis.
+- **NumPy:** Numerical operations.
+- **Matplotlib / Seaborn:** Data visualisation.
+- **Scikit-learn:** Data preprocessing, model development, hyperparameter optimisation and evaluation.
+- **Jupyter Notebook:** Exploratory analysis and experimentation.
+
+## Running the Project
+
+1. Clone or download this repository.
+2. Install the required Python libraries.
+3. Open the Jupyter Notebook.
+4. Run the notebook cells sequentially to reproduce the data preparation, feature engineering, model training and evaluation.
+
+### Dependencies
+
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn jupyter
+```
+
+## Conclusion
+
+This project explores how machine learning can be applied to credit card default prediction.
+
+By comparing Logistic Regression, Decision Trees and Random Forests, the project investigates the strengths and limitations of different classification approaches.
+
+The evaluation considers not only overall predictive accuracy but also the ability to identify customers who actually default. This is particularly important when working with imbalanced classification problems, where a model can achieve relatively high accuracy while failing to identify a substantial proportion of the minority class.
+
+The final model selection is based on a comparison of predictive performance, with particular consideration given to precision, recall and F1-score.
+
+## Future Improvements
+
+Potential areas for further development include:
+
+- More extensive feature importance and model interpretation analysis.
+- Further hyperparameter optimisation.
+- Exploring alternative ensemble methods such as Gradient Boosting.
+- Evaluating model calibration and decision thresholds.
+- Investigating the business implications of false positive and false negative predictions.
