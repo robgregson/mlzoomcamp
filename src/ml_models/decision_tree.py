@@ -1,18 +1,17 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
     recall_score,
     f1_score,
-    confusion_matrix,
     classification_report
 )
+from src.data_modelling import load_training_data, list_model_metrics, list_metrics_for_thresholds
 
-from src.constants import *
-from src.data_modelling import load_training_data
+X_train, y_train, X_val, y_val, X_test, y_test = load_training_data()
 
+# train the model
 dt_model = DecisionTreeClassifier(
     criterion='gini',
     max_depth=4,
@@ -21,29 +20,11 @@ dt_model = DecisionTreeClassifier(
     class_weight=None,
     random_state=42
 )
-
-X_train, y_train, X_val, y_val, X_test, y_test = load_training_data()
-
-decision_tree_model = DecisionTreeClassifier(
-    criterion='gini',
-    max_depth=4,
-    min_samples_split=20,
-    min_samples_leaf=10,
-    class_weight=None,
-    random_state=42
-)
-
 dt_model.fit(X_train, y_train)
 
 y_pred_tree = dt_model.predict(X_test)
 
-print("Accuracy:", accuracy_score(y_test, y_pred_tree))
-print("Precision:", precision_score(y_test, y_pred_tree))
-print("Recall:", recall_score(y_test, y_pred_tree))
-print("F1:", f1_score(y_test, y_pred_tree))
-
-print("\nConfusion Matrix:")
-print(confusion_matrix(y_test, y_pred_tree))
+list_model_metrics(y_val, y_pred_tree)
 
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred_tree))
@@ -183,29 +164,8 @@ dt_model = DecisionTreeClassifier(
 dt_model.fit(X_train, y_train)
 
 y_pred_tree = dt_model.predict(X_test)
-
-print("Accuracy:", accuracy_score(y_test, y_pred_tree))
-print("Precision:", precision_score(y_test, y_pred_tree))
-print("Recall:", recall_score(y_test, y_pred_tree))
-print("F1:", f1_score(y_test, y_pred_tree))
-
-print("\nConfusion Matrix:")
-print(confusion_matrix(y_test, y_pred_tree))
-
-print("\nClassification Report:")
-print(classification_report(y_test, y_pred_tree))
-
-
 y_prob = dt_model.predict_proba(X_test)[:, 1]
 
-for threshold in [0.3, 0.4, 0.5, 0.6, 0.7]:
+list_model_metrics(y_test, y_pred_tree, y_prob)
 
-    y_pred = (y_prob >= threshold).astype(int)
-
-    print(f"\nThreshold: {threshold}")
-    print(f"Accuracy:  {accuracy_score(y_test, y_pred):.4f}")
-    print(f"Precision: {precision_score(y_test, y_pred):.4f}")
-    print(f"Recall:    {recall_score(y_test, y_pred):.4f}")
-    print(f"F1:        {f1_score(y_test, y_pred):.4f}")
-
-
+list_metrics_for_thresholds(y_test, y_pred_tree,[0.3, 0.4, 0.5, 0.6, 0.7])

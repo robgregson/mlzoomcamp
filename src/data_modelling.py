@@ -26,14 +26,15 @@ def load_training_data():
     return X_train, y_train, X_val, y_val, X_test, y_test
 
 
-def list_model_metrics(y_true:ndarray, y_predicted:ndarray, y_probabilities):
+def list_model_metrics(y_true:ndarray, y_predicted:ndarray, y_probabilities:(ndarray|None) = None):
 
     print("\n")
     print(f"Accuracy (total proportion correctly classified):                   {accuracy_score(y_true, y_predicted):.4f}")
     print(f"Precision (of predicted defaults, how many actually defaulted):     {precision_score(y_true, y_predicted):.4f}")
     print(f"Recall (of defaulters, how many were spotted):                      {recall_score(y_true, y_predicted):.4f}")
     print(f"F1 (precision v recall):                                            {f1_score(y_true, y_predicted):.4f}")
-    print(f"ROC-AUC (how well defaulters distinguished from non-defaulters):    {roc_auc_score(y_true, y_probabilities):.4f}")
+    if y_probabilities is not None:
+        print(f"ROC-AUC (how well defaulters distinguished from non-defaulters):    {roc_auc_score(y_true, y_probabilities):.4f}")
 
     print("\nConfusion Matrix (TP, TN) (FP, FN):")
     print(confusion_matrix(y_true, y_predicted))

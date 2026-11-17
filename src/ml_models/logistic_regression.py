@@ -26,4 +26,4 @@ y_pred:ndarray = (y_val_proba >= 0.3).astype(int)
 
 list_model_metrics(y_val, y_pred, y_val_proba)
 
-# list_metrics_for_thresholds(y_val,  y_val_proba,[0.5, 0.4, 0.3, 0.2])
+list_metrics_for_thresholds(y_val,  y_val_proba,[0.5, 0.4, 0.3, 0.2])
