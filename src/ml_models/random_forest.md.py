@@ -6,7 +6,7 @@ from sklearn.metrics import f1_score
 from src.data_modelling import load_training_data, list_model_metrics
 
 def choose_best_threshold(y_true, y_prob:np.ndarray):
-
+    # using f1
     thresholds = np.arange(0.1, 0.91, 0.01)
     best_threshold = 0.5
     best_f1 = 0
@@ -56,3 +56,5 @@ feature_importance = pd.DataFrame({'feature': X_train.columns,'importance': rand
 feature_importance = feature_importance.sort_values(by='importance',ascending=False)
 print("\nFeature Importance:")
 print(feature_importance.to_string(index=False))
+# Note: Random Forest feature importance measures impurity reduction, not necessarily the actual predictive contribution
+# of a feature. It can favour continuous or high-cardinality features.
