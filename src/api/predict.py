@@ -4,7 +4,7 @@ from fastapi import FastAPI
 app = FastAPI()
 
 # Load the saved model
-with open('train.pkl', 'rb') as file:
+with open('../../train.pkl', 'rb') as file:
     model_bundle = pickle.load(file)
 
 # Extract the model and threshold

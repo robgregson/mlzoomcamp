@@ -10,7 +10,8 @@ from sklearn.metrics import (
     classification_report
 )
 
-from constants import *
+from src.constants import *
+from src.data_modelling import load_training_data
 
 dt_model = DecisionTreeClassifier(
     criterion='gini',
@@ -21,19 +22,7 @@ dt_model = DecisionTreeClassifier(
     random_state=42
 )
 
-df = pd.read_csv(prepared_data_file_path)
-
-# print(df.columns)
-
-# Separate features and target
-X = df.drop(columns=['default'])
-y = df['default']
-
-# First split: 60% train, 40% remaining
-X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.4, random_state=42, stratify=y)
-
-# Second split: divide remaining 40% equally
-X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp)
+X_train, y_train, X_val, y_val, X_test, y_test = load_training_data()
 
 decision_tree_model = DecisionTreeClassifier(
     criterion='gini',

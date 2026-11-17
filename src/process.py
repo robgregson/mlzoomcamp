@@ -1,6 +1,6 @@
-from constants import *
-from data_inspection import *
-from data_preprocessing import *
+from src.constants import *
+from src.data_inspection import *
+from src.data_preprocessing import *
 
 __EXPERIMENTAL__ = False
 

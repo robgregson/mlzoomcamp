@@ -143,3 +143,5 @@ def add_repayment_proportion_columns(df: pd.DataFrame) -> pd.DataFrame:
     df['repayment_proportion_average_new'] = pd.concat(repayment_proportions, axis=1).mean(axis=1)
 
     return df
+
+

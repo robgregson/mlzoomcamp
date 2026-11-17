@@ -13,38 +13,13 @@ from sklearn.metrics import (
     confusion_matrix,
     classification_report
 )
-from constants import *
+from src.data_modelling import load_training_data
 
 # --------------------------------------------------
 # 1. Load and prepare the data
 # --------------------------------------------------
 
-df = pd.read_csv(prepared_data_file_path)
-
-
-X = df.drop(columns=['default'])
-y = df['default']
-
-
-# --------------------------------------------------
-# 2. Split into training, validation and test sets
-# --------------------------------------------------
-
-# First split: 60% training, 40% remaining
-X_train, X_temp, y_train, y_temp = train_test_split(
-    X, y,
-    test_size=0.4,
-    random_state=42,
-    stratify=y
-)
-
-# Second split: 20% validation, 20% test
-X_val, X_test, y_val, y_test = train_test_split(
-    X_temp, y_temp,
-    test_size=0.5,
-    random_state=42,
-    stratify=y_temp
-)
+X_train, y_train, X_val, y_val, X_test, y_test = load_training_data()
 
 
 # --------------------------------------------------
