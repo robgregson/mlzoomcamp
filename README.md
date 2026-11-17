@@ -129,6 +129,13 @@ The evaluation considers not only overall predictive accuracy but also the abili
 
 The final model selection is based on a comparison of predictive performance, with particular consideration given to precision, recall and F1-score.
 
+##
+
+URL of deployed service:
+
+https://credit-default-3qb6klc5la-ew.a.run.app
+https://credit-default-3qb6klc5la-ew.a.run.app/health
+
 ## Future Improvements
 
 Potential areas for further development include:
