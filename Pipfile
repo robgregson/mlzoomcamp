@@ -9,6 +9,7 @@ numpy = "*"
 scikit-learn = "*"
 uvicorn = "*"
 fastapi = "*"
+xgboost = "*"
 
 [dev-packages]
 
