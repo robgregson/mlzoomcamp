@@ -3,18 +3,25 @@ from fastapi import FastAPI
 
 from src.helpers.input_processing import preprocess_input
 
+VERBOSE = True
+
 app = FastAPI()
 
 # Load the saved model
-with open('../../train.pkl', 'rb') as file:
+
+from src.config.constants import PICKLE_FILENAME
+from src.config.paths import PROJECT_ROOT_DIR
+
+with open(str(PROJECT_ROOT_DIR / PICKLE_FILENAME), 'rb') as file:
     model_bundle = pickle.load(file)
 
 # Extract the model and threshold
 model = model_bundle['model']
 threshold = model_bundle['threshold']
 
-print("Model loaded successfully!")
-print("Threshold:", threshold)
+if VERBOSE:
+    print("Model loaded successfully!")
+    print("Threshold:", threshold)
 
 @app.get("/")
 def home():

@@ -15,7 +15,8 @@ import pickle
 
 from sklearn.model_selection import train_test_split
 
-from src.config.paths import DATA_DIRECTORY
+from src.config.constants import PICKLE_FILENAME
+from src.config.paths import DATA_DIRECTORY, PROJECT_ROOT_DIR
 
 
 def choose_threshold(y_true, y_prob):
@@ -52,7 +53,7 @@ def main():
     )
     parser.add_argument(
         "--output",
-        default="train.pkl",
+        default=str(PROJECT_ROOT_DIR / PICKLE_FILENAME),
         help="Path for the saved pickle model bundle.",
     )
     args = parser.parse_args()

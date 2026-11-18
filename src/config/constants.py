@@ -15,3 +15,5 @@ fx_curr_to_twd = {
     'GBP' : 46,
     'EUR': 37.5
 }
+
+PICKLE_FILENAME = "train.pkl"
