@@ -15,6 +15,8 @@ import pickle
 
 from sklearn.model_selection import train_test_split
 
+from src.config.paths import DATA_DIRECTORY
+
 
 def choose_threshold(y_true, y_prob):
     """Choose the probability threshold that maximises F1."""
@@ -40,7 +42,7 @@ def main():
     )
     parser.add_argument(
         "--data",
-        default="data/credit_card_processed_data.csv",
+        default=str(DATA_DIRECTORY / "credit_card_processed_data.csv"),
         help="Path to the processed CSV dataset.",
     )
     parser.add_argument(

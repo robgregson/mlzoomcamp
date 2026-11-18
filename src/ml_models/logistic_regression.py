@@ -3,7 +3,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 
-from src.data_modelling import load_training_data, list_model_metrics, list_metrics_for_thresholds
+from src.helpers.data_modelling import load_training_data, list_model_metrics, list_metrics_for_thresholds
 
 X_train, y_train, X_val, y_val, X_test, y_test = load_training_data()
 

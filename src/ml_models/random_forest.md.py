@@ -3,7 +3,7 @@ import numpy as np
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import f1_score
-from src.data_modelling import load_training_data, list_model_metrics
+from src.helpers.data_modelling import load_training_data, list_model_metrics
 
 def choose_best_threshold(y_true, y_prob:np.ndarray):
     # using f1

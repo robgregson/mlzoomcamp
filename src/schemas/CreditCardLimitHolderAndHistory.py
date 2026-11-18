@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 
-class CreditCardInput(BaseModel):
+class CreditCardLimitHolderAndHistory(BaseModel):
     LIMIT_BAL: int
+
     SEX: int
     EDUCATION: int
     MARRIAGE: int

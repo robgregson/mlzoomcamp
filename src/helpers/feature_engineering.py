@@ -1,11 +1,9 @@
-import pandas as pd
+import pandas
 
-from src.data_preprocessing import *
+from src.helpers.data_preprocessing import *
 
 
-def engineer_features(data: dict) -> pd.DataFrame:
-
-    df = pd.DataFrame([data])
+def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
 
     df = normalise_column_names(df)
 
@@ -39,7 +37,7 @@ def engineer_features(data: dict) -> pd.DataFrame:
                             )
 
     df = add_derived_behaviour_columns(df)
-    df = add_credit_utilisation_columns(df)  # should be ok - there are no missing values for LIMIT_BAL
+    df = add_credit_utilisation_columns(df)  # should be fine - there are no missing values for LIMIT_BAL
     df = add_trend_columns(df)
     df = add_average_bill_columns(df).dropna(subset=['average_bill_amount'])
     df = add_average_repayment_columns(df).dropna(subset=['average_payment_amount'])

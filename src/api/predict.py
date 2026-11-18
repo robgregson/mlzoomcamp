@@ -1,7 +1,7 @@
 import pickle
 from fastapi import FastAPI
 
-from src.engineer_features import engineer_features
+from src.helpers.input_processing import preprocess_input
 
 app = FastAPI()
 
@@ -25,15 +25,10 @@ def health():
     return {"status": "healthy", "model_loaded": model is not None}
 
 @app.get("/predict")
-def predict(data: dict):
+def predict(json_data: dict, currency_3_letters: str = 'TWD'):
 
-    # Calculate model features
-    features = engineer_features(data)
-
-    # Calculate probability of default
-    probability = model.predict_proba(features)[0][1]
-
-    # Apply classification threshold
+    df = preprocess_input(json_data, currency_3_letters)
+    probability = model.predict_proba(df)[0][1]
     prediction = int(probability >= threshold)
 
     return {

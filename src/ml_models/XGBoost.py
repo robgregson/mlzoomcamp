@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from xgboost import XGBClassifier
 from sklearn.metrics import f1_score
-from src.data_modelling import load_training_data, list_model_metrics
+from src.helpers.data_modelling import load_training_data, list_model_metrics
 
 def choose_best_threshold(y_true, y_prob):
     thresholds = np.arange(0.1, 0.91, 0.01)

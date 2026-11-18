@@ -10,7 +10,7 @@ from sklearn.metrics import (
     classification_report
 )
 from sklearn.model_selection import train_test_split
-from src.constants import prepared_data_file_path
+from src.config.constants import prepared_data_file_path
 
 def load_training_data():
 
