@@ -1,9 +1,9 @@
 import datetime
 from src.config.constants import (
-    data_year,
-    annual_taiwan_inflation,
-    currency_fields,
-    fx_curr_to_twd
+    BASELINE_YEAR,
+    ANNUAL_TAIWAN_INFLATION,
+    CURRENCY_FIELDS,
+    FX_CURR_TO_TWD
 )
 from src.helpers.data_preprocessing import *
 from src.helpers.feature_engineering import engineer_features
@@ -11,19 +11,19 @@ from src.helpers.feature_engineering import engineer_features
 
 def deflate_currency_values(df: pd.DataFrame)  -> pd.DataFrame:
 
-    year_diff = datetime.datetime.now().year - data_year
-    inflation_factor = annual_taiwan_inflation ** year_diff
+    year_diff = datetime.datetime.now().year - BASELINE_YEAR
+    inflation_factor = ANNUAL_TAIWAN_INFLATION ** year_diff
 
-    for f in currency_fields:
+    for f in CURRENCY_FIELDS:
         df[f] = df[f] / inflation_factor
 
     return df
 
 def convert_currency_values(df: pd.DataFrame, currency_3_letters) -> pd.DataFrame:
 
-    fx_conversion_rate = fx_curr_to_twd.get(currency_3_letters, 1.0)
+    fx_conversion_rate = FX_CURR_TO_TWD.get(currency_3_letters, 1.0)
 
-    for f in currency_fields:
+    for f in CURRENCY_FIELDS:
         df[f] = df[f] * fx_conversion_rate
 
     return df

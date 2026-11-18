@@ -10,11 +10,11 @@ from sklearn.metrics import (
     classification_report
 )
 from sklearn.model_selection import train_test_split
-from src.config.constants import prepared_data_file_path
+from src.config.constants import PREPARED_DATA_FILE_PATH
 
 def load_training_data():
 
-    df = pd.read_csv(prepared_data_file_path)
+    df = pd.read_csv(PREPARED_DATA_FILE_PATH)
     # Separate features and target
     X = df.drop(columns=['default'])
     y = df['default']

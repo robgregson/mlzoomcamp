@@ -1,15 +1,12 @@
 from src.config.paths import DATA_DIRECTORY
 
-data_directory = 'data'
-filename = 'credit_card_default_data.csv'
-output_filename = 'credit_card_processed_data.csv'
-data_file_path = DATA_DIRECTORY / filename
-prepared_data_file_path = DATA_DIRECTORY / output_filename
+DATA_FILE_PATH = DATA_DIRECTORY / 'credit_card_default_data.csv'
+PREPARED_DATA_FILE_PATH = DATA_DIRECTORY / 'credit_card_processed_data.csv'
 
-data_year:int = 2005
-annual_taiwan_inflation:float = 0.0136
-currency_fields = ['LIMIT_BAL','PAY_1','BILL_AMT1','PAY_AMT1']
-fx_curr_to_twd = {
+BASELINE_YEAR:int = 2005
+ANNUAL_TAIWAN_INFLATION:float = 0.0136
+CURRENCY_FIELDS = ['LIMIT_BAL', 'PAY_1', 'BILL_AMT1', 'PAY_AMT1']
+FX_CURR_TO_TWD = {
     'TWD' : 1,
     'USD' : 33,
     'GBP' : 46,

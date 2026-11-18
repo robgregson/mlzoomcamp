@@ -10,7 +10,7 @@ from src.helpers.feature_engineering import engineer_features
 # load the data
 
 # ignore the row which contains: "X1", X2, X3, ... X23, Y
-df = pd.read_csv(data_file_path, skiprows=1)
+df = pd.read_csv(DATA_FILEy_PATH, skiprows=1)
 
 if __EXPERIMENTAL__:
     # when experimenting, just take the first few rows
@@ -61,8 +61,8 @@ spot_correlations(df)
 answer = input("\nDo you want to continue to output the data? (y/n): ").strip().lower()
 
 if answer in ["yes", "y"]:
-    print("\nSaving data to output file: ", prepared_data_file_path)
-    df.to_csv(prepared_data_file_path, index=False, header=True)
+    print("\nSaving data to output file: ", PREPARED_DATA_FILE_PATH)
+    df.to_csv(PREPARED_DATA_FILE_PATH, index=False, header=True)
 else:
     print("Stopping.")
 
